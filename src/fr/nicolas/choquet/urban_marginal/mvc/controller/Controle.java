@@ -2,6 +2,11 @@ package fr.nicolas.choquet.urban_marginal.mvc.controller;
 
 import fr.nicolas.choquet.urban_marginal.connection.ClientSocket;
 import fr.nicolas.choquet.urban_marginal.connection.ServerSocket;
+import fr.nicolas.choquet.urban_marginal.mvc.model.Jeu;
+import fr.nicolas.choquet.urban_marginal.mvc.model.JeuClient;
+import fr.nicolas.choquet.urban_marginal.mvc.model.JeuServeur;
+import fr.nicolas.choquet.urban_marginal.mvc.vue.Arene;
+import fr.nicolas.choquet.urban_marginal.mvc.vue.ChoixJoueur;
 import fr.nicolas.choquet.urban_marginal.mvc.vue.EntreeJeu;
 
 import javax.swing.*;
@@ -9,6 +14,9 @@ import javax.swing.*;
 public class Controle {
     private EntreeJeu frmEntreeJeu;
     private int port = 6666;
+    private Jeu jeu;
+    private Arene frmArene;
+    private ChoixJoueur frmChoixJoueur;
 
     public EntreeJeu getFrmEntreeJeu() {
         return frmEntreeJeu;
@@ -33,11 +41,18 @@ public class Controle {
         String _info = (String)info;
         if(_info.equals("serveur")) {
             ServerSocket serverSocket = new ServerSocket(this, getPort());
+            jeu = new JeuServeur(this);
             serverSocket.start();
+            frmEntreeJeu.dispose();
+            frmArene = new Arene(this);
+            frmArene.setVisible(true);
         }
         else {
             if((new ClientSocket(_info, getPort(), this)).isConnectionOK()) {
-
+                jeu = new JeuClient(this);
+                frmArene = new Arene(this);
+                frmEntreeJeu.dispose();
+                frmChoixJoueur = new ChoixJoueur(this);
             }
         }
     }

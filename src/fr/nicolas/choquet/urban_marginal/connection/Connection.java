@@ -27,4 +27,13 @@ public class Connection extends Thread {
 
         start();
     }
+
+    public void envoi(Object object) {
+        try {
+            outputStream.writeObject(object);
+            outputStream.flush();
+        } catch (IOException e) {
+            System.out.println("Erreur sur l'objet outputStream !");
+        }
+    }
 }
