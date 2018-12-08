@@ -15,5 +15,10 @@ public class ChoixJoueur extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
+
+        JTextField textField = new JTextField();
+        textField.setBounds(133, 172, 116, 22);
+        contentPane.add(textField);
+        textField.setColumns(10);
     }
 }
