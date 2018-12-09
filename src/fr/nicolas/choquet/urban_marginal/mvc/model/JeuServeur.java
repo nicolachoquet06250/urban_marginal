@@ -10,7 +10,7 @@ public class JeuServeur extends Jeu {
 
     @Override
     public void setConnection(Connection connection) {
-
+        this.connection = connection;
     }
 
     @Override

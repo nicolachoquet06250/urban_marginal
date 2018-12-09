@@ -42,7 +42,6 @@ public class Controle {
         if(_info.equals("serveur")) {
             ServerSocket serverSocket = new ServerSocket(this, getPort());
             jeu = new JeuServeur(this);
-            serverSocket.start();
             frmEntreeJeu.dispose();
             frmArene = new Arene(this);
             frmArene.setVisible(true);
@@ -50,15 +49,15 @@ public class Controle {
         else {
             if((new ClientSocket(_info, getPort(), this)).isConnectionOK()) {
                 jeu = new JeuClient(this);
-                frmArene = new Arene(this);
                 frmEntreeJeu.dispose();
+                frmArene = new Arene(this);
                 frmChoixJoueur = new ChoixJoueur(this);
+                frmChoixJoueur.setVisible(true);
             }
         }
     }
 
     public static void main(String[] argv) {
-        new Controle();
         new Controle();
     }
 }

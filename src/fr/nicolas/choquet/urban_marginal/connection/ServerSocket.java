@@ -11,6 +11,7 @@ public class ServerSocket extends Thread {
         this.recepteur = recepteur;
         try {
             serverSocket = new java.net.ServerSocket(port);
+            start();
         } catch (IOException e) {
             System.out.println("Erreur grave lors de la création du socket: " + e);
             System.exit(0);
@@ -25,6 +26,7 @@ public class ServerSocket extends Thread {
                 System.out.println("Le serveur attend !");
                 socket = serverSocket.accept();
                 System.out.println("Un client s'est connecté !");
+                new Connection(socket, recepteur);
             } catch (IOException e) {
                 System.out.println("Erreur grave lors de la création du socket: " + e);
                 System.exit(0);
