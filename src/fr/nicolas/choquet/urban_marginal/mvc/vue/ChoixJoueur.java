@@ -18,6 +18,8 @@ import javax.swing.SwingConstants;
 
 public class ChoixJoueur extends JFrame implements Global {
 
+    private Controle controle;
+
     private JPanel contentPane;
     private JTextField txtPseudo;
     private JLabel lblFond;
@@ -26,12 +28,17 @@ public class ChoixJoueur extends JFrame implements Global {
     private JLabel lblGo;
     private JLabel lblPersonnage;
 
+    private int numPerso;
 
-    /**
-     * Create the frame.
-     */
     public ChoixJoueur(Controle controle) {
+        this.controle = controle;
         init_components();
+        numPerso = 1;
+        affichePerso();
+    }
+
+    private void affichePerso() {
+        lblPersonnage.setIcon(new ImageIcon(PERSO + numPerso + MARCHE + '1' + "d" + GAUCHE + EXTIMAGE));
     }
 
     private void init_components() {
