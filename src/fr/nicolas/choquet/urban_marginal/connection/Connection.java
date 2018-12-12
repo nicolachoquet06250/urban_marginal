@@ -1,5 +1,7 @@
 package fr.nicolas.choquet.urban_marginal.connection;
 
+import fr.nicolas.choquet.urban_marginal.mvc.controller.Controle;
+
 import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,12 +15,10 @@ public class Connection extends Thread {
 
     public Connection(Socket socket, Object recepteur) {
         this.recepteur = recepteur;
-
         createOutputStream(socket);
-
         createInputStream(socket);
-
         start();
+        ((Controle)this.recepteur).setConnection(this) ;
     }
 
     private void createInputStream(Socket socket) {
@@ -55,6 +55,7 @@ public class Connection extends Thread {
         while (inOk) {
             try {
                 reception = inputStream.readObject();
+                ((Controle)recepteur).receptionInfo(this, reception);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "L'ordinateur distant s'est déconnecté !");
                 inOk = false;

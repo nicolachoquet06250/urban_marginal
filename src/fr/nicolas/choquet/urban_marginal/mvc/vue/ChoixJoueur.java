@@ -5,16 +5,11 @@ import fr.nicolas.choquet.urban_marginal.mvc.controller.Global;
 
 import java.awt.Cursor;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.SwingConstants;
 
 public class ChoixJoueur extends JFrame implements Global {
 
@@ -29,6 +24,7 @@ public class ChoixJoueur extends JFrame implements Global {
     private JLabel lblPersonnage;
 
     private int numPerso;
+    private int minPerso = 1;
 
     public ChoixJoueur(Controle controle) {
         this.controle = controle;
@@ -127,15 +123,25 @@ public class ChoixJoueur extends JFrame implements Global {
     }
 
     protected void lblPrecedent_clic() {
-        System.out.println("Clique sur précédent !");
+        numPerso = numPerso == minPerso ? NBPERSOS : (numPerso - 1);
+        affichePerso();
     }
 
     protected void lblSuivant_clic() {
-        System.out.println("Clique sur suivant !");
+        numPerso = numPerso == NBPERSOS ? minPerso : (numPerso + 1);
+        affichePerso();
     }
 
     protected void lblGo_clic() {
-        System.out.println("Clique sur GO !");
+        if(txtPseudo.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Vous devez entrer un pseudo !");
+            txtPseudo.requestFocus();
+        }
+        else {
+            controle.evenementVue(this, PSEUDO + SEPAR + txtPseudo.getText() + SEPAR + numPerso);
+            dispose();
+            controle.getFrmArene().setVisible(true);
+        }
     }
 
     private void souris_normale() {

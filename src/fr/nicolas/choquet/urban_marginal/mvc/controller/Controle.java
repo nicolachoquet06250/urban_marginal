@@ -1,6 +1,7 @@
 package fr.nicolas.choquet.urban_marginal.mvc.controller;
 
 import fr.nicolas.choquet.urban_marginal.connection.ClientSocket;
+import fr.nicolas.choquet.urban_marginal.connection.Connection;
 import fr.nicolas.choquet.urban_marginal.connection.ServerSocket;
 import fr.nicolas.choquet.urban_marginal.mvc.model.Jeu;
 import fr.nicolas.choquet.urban_marginal.mvc.model.JeuClient;
@@ -17,13 +18,19 @@ public class Controle {
     private Jeu jeu;
     private Arene frmArene;
     private ChoixJoueur frmChoixJoueur;
+    private Connection connection;
 
     public EntreeJeu getFrmEntreeJeu() {
         return frmEntreeJeu;
     }
+    public Arene getFrmArene() { return frmArene; }
 
     public int getPort() {
         return port;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
     public Controle() {
@@ -35,6 +42,13 @@ public class Controle {
         if(frame instanceof EntreeJeu) {
             evenementEntreeJeu(info);
         }
+        else if (frame instanceof ChoixJoueur) {
+            evenementChoixJoueur(info);
+        }
+    }
+
+    private void evenementChoixJoueur(Object info) {
+        ((JeuClient)jeu).envoi(info);
     }
 
     private void evenementEntreeJeu(Object info) {
@@ -49,12 +63,17 @@ public class Controle {
         else {
             if((new ClientSocket(_info, getPort(), this)).isConnectionOK()) {
                 jeu = new JeuClient(this);
+                jeu.setConnection(connection);
                 frmEntreeJeu.dispose();
                 frmArene = new Arene(this);
                 frmChoixJoueur = new ChoixJoueur(this);
                 frmChoixJoueur.setVisible(true);
             }
         }
+    }
+
+    public void receptionInfo(Connection connection, Object info) {
+        jeu.reception(connection, info);
     }
 
     public static void main(String[] argv) {

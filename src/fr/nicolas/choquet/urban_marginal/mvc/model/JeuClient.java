@@ -22,4 +22,8 @@ public class JeuClient extends Jeu {
     public void deconnection(Connection connection) {
 
     }
+
+    public void envoi(Object info) {
+        super.envoi(connection, info);
+    }
 }
